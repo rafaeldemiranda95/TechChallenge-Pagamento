@@ -1,34 +1,53 @@
-name: Análise do SonarCloud
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-  workflow_dispatch:
-
-permissions:
-  pull-requests: read # permite que o SonarCloud decore PRs com resultados de análise
+    branches:
+      - main
 
 jobs:
-  Analysis:
+  sonarcloud_analysis:
     runs-on: ubuntu-latest
-
     steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
       - name: Analisar com SonarCloud
         uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Necessário para obter informações de PR
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}    # Gere um token no Sonarcloud.io, adicione-o às secrets deste repositório com o nome SONAR_TOKEN (Configurações > Secrets > Actions > adicionar nova secret do repositório)
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         with:
           args:
             -Dsonar.projectKey=rafaeldemiranda95_TechChallenge-Pagamento
             -Dsonar.organization=rafaeldemiranda95
             -Dsonar.scanner.force-deprecated-java-version=true
-            # Caminhos separados por vírgulas para diretórios contendo arquivos-fonte principais.
-            #-Dsonar.sources= # opcional, o padrão é o diretório base do projeto
-            # Quando a análise precisa ocorrer em um diretório diferente daquele de onde foi iniciada
-            #-Dsonar.projectBaseDir= # opcional, o padrão é .
-            # Caminhos separados por vírgulas para diretórios contendo arquivos-fonte de testes.
-            #-Dsonar.tests= # opcional. Para mais informações sobre Cobertura de Código, consulte https://docs.sonarcloud.io/enriching/test-coverage/overview/
-            # Adicion
+            # Adicione outros argumentos necessários
+
+  build_and_push:
+    needs: sonarcloud_analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Ler Versão
+        id: version
+        run: echo "::set-output name=VERSION::$(cat version.txt)"
+      
+      - name: Configurar Docker Buildx
+        uses: docker/setup-buildx-action@v1
+      
+      - name: Login no Docker Hub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
+      
+      - name: Construir e Publicar Imagem
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: rafaeldemiranda/techchallenge-pagamento:${{ steps.version.outputs.VERSION }}
