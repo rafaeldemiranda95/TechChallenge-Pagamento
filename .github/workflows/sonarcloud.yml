@@ -32,11 +32,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      
-      - name: Ler Versão
-        id: version
-        run: echo "::set-output name=VERSION::$(cat version.txt)"
-      
+
+      - name: Definir variáveis de ambiente para o hash do commit
+        run: echo "COMMIT_HASH=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
+
       - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v1
       
@@ -52,4 +51,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: rafaeldemiranda/techchallenge-pagamento:${{ steps.version.outputs.VERSION }}
+          tags: rafaeldemiranda/techchallenge-pagamento:${{ env.COMMIT_HASH }}
