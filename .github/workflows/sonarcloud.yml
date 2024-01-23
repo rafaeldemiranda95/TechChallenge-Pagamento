@@ -24,7 +24,6 @@ jobs:
             -Dsonar.scanner.force-deprecated-java-version=true
             -Dsonar.coverage.exclusions=**/*Test.java
             -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
-            # Adicione aqui outras configurações de cobertura conforme necessário
 
   build_and_publish_image:
     needs: sonarcloud_analysis
