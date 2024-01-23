@@ -22,9 +22,11 @@ jobs:
             -Dsonar.projectKey=rafaeldemiranda95_TechChallenge-Pagamento
             -Dsonar.organization=rafaeldemiranda95
             -Dsonar.scanner.force-deprecated-java-version=true
-            # Adicione outros argumentos necessários
+            -Dsonar.coverage.exclusions=**/*Test.java
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
+            # Adicione aqui outras configurações de cobertura conforme necessário
 
-  build_and_push:
+  build_and_publish_image:
     needs: sonarcloud_analysis
     runs-on: ubuntu-latest
     steps:
