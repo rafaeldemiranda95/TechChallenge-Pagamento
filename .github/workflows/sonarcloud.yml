@@ -50,4 +50,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: rafaeldemiranda/techchallenge:${{ steps.version.outputs.VERSION }}
+          tags: rafaeldemiranda/techchallenge-pagamento:${{ steps.version.outputs.VERSION }}
