@@ -1,0 +1,28 @@
+name: Análise do SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    types: [opened, synchronize, reopened]
+    
+jobs:
+  sonarcloud_analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: Analisar com SonarCloud
+        uses: SonarSource/sonarcloud-github-action@de2e56b42aa84d0b1c5b622644ac17e505c9a049
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+        with:
+          args:
+            -Dsonar.projectKey=rafaeldemiranda95_TechChallenge-Pagamento
+            -Dsonar.organization=rafaeldemiranda95
+            -Dsonar.scanner.force-deprecated-java-version=true
+            -Dsonar.coverage.exclusions=**/*Test.java
+            -Dsonar.javascript.lcov.reportPaths=coverage/lcov.info
