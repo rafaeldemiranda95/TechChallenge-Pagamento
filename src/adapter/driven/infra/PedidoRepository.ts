@@ -1,21 +1,5 @@
-import { prisma } from '../../../config/database';
-import { Pedido } from '../../../core/domain/models/Pedido';
 import { runQuery } from './../../../config/database';
 export class PedidoRepository {
-  async criarPagamento(pedido: Pedido): Promise<void> {
-    try {
-      await prisma.pagamento.create({
-        data: {
-          pedidoId: pedido.id ? pedido.id : 0,
-          valor: pedido.total ? pedido.total : 0,
-          status: 'Pendente',
-          usuarioId: pedido.usuario.id,
-        },
-      });
-    } catch (error: any) {
-      console.log('error', error);
-    }
-  }
   // Manter
   async statusPagamentoPedido(id: number): Promise<any> {
     try {
@@ -28,6 +12,7 @@ export class PedidoRepository {
       return 'Solicitação de pagamento não criada!';
     } catch (error: any) {
       console.log('error', error);
+      throw error;
     }
   }
 }

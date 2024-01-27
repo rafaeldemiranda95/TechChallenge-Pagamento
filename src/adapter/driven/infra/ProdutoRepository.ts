@@ -1,4 +1,4 @@
-import { runQuery, prisma } from '../../../config/database';
+import { runQuery } from '../../../config/database';
 import { Produto } from '../../../core/domain/models/Produto';
 import { IProdutoUseCase } from '../../../core/domain/useCases/Produto/IProdutoUseCase';
 
@@ -74,6 +74,7 @@ export class ProdutoRepository implements IProdutoUseCase {
       // return returnProduto;
     } catch (error) {
       console.log('error  ==>>  ', error);
+      throw error;
     }
   }
 
