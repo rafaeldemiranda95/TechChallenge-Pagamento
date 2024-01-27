@@ -35,7 +35,7 @@ export class UsuarioRepository implements IUsuarioUseCase {
     if (_getUsuarioDb.length > 0) {
       let getUsuarioDb = _getUsuarioDb[0];
       if (usuario.senha != undefined && getUsuarioDb.senha != undefined) {
-        let validaSenha = new VerificaSenha(usuario.senha, getUsuarioDb.senha);
+        let validaSenha = new VerificaSenha();
         if (validaSenha) {
           let token = jwt.sign(
             {
