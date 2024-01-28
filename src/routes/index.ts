@@ -1,10 +1,18 @@
 import express from 'express';
+import { UsuarioRepository } from '../adapter/driven/infra/UsuarioRepository';
 import { PedidoController } from '../adapter/driver/PedidoController';
 import { UsuarioController } from '../adapter/driver/UsuarioController';
 import { autenticacaoMiddleware } from '../adapter/middleware/autenticacao.middleware';
 import { UsuarioUseCase } from '../core/domain/useCases/Usuario/UsuarioUseCase';
+
 const router = express.Router();
-const usuarioUseCase = new UsuarioUseCase();
+
+// Criando uma instância de UsuarioRepository
+const usuarioRepository = new UsuarioRepository();
+// Passando usuarioRepository para UsuarioUseCase
+const usuarioUseCase = new UsuarioUseCase(usuarioRepository);
+
+// const usuarioUseCase = new UsuarioUseCase();
 router.get('/', (req, res) => {
   res.status(200).send('OK');
 });
