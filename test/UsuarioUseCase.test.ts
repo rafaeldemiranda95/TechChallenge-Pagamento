@@ -1,8 +1,8 @@
-import { UsuarioRepository } from '../../../../adapter/driven/infra/UsuarioRepository';
-import { Usuario } from '../../../domain/models/Usuario';
-import { UsuarioUseCase } from './UsuarioUseCase';
+import { UsuarioRepository } from '../src/adapter/driven/infra/UsuarioRepository';
+import { Usuario } from '../src/core/domain/models/Usuario';
+import { UsuarioUseCase } from '../src/core/domain/useCases/Usuario/UsuarioUseCase';
 
-jest.mock('../../../../adapter/driven/infra/UsuarioRepository');
+jest.mock('../src/adapter/driven/infra/UsuarioRepository');
 
 describe('UsuarioUseCase', () => {
   let usuarioUseCase: UsuarioUseCase;

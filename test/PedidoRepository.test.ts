@@ -1,7 +1,7 @@
-import { runQuery } from './../../../config/database';
-import { PedidoRepository } from './PedidoRepository';
+import { PedidoRepository } from '../src/adapter/driven/infra/PedidoRepository';
+import { runQuery } from '../src/config/database';
 
-jest.mock('./../../../config/database');
+jest.mock('../src/config/database');
 
 describe('PedidoRepository', () => {
   let pedidoRepository: PedidoRepository;
@@ -13,7 +13,7 @@ describe('PedidoRepository', () => {
   test('deve retornar o status do pagamento para um ID válido', async () => {
     const idMock = 1;
     const pagamentoMock = { status: 'Pago' };
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('../src/config/database').runQuery.mockResolvedValue([
       pagamentoMock,
     ]);
 
@@ -27,7 +27,7 @@ describe('PedidoRepository', () => {
 
   test('deve retornar mensagem padrão para um ID inválido', async () => {
     const idMock = 999;
-    require('./../../../config/database').runQuery.mockResolvedValue([]);
+    require('../src/config/database').runQuery.mockResolvedValue([]);
 
     const status = await pedidoRepository.statusPagamentoPedido(idMock);
 
@@ -40,7 +40,7 @@ describe('PedidoRepository', () => {
   test('deve lidar com erros de consulta ao banco de dados', async () => {
     const idMock = 1;
     const errorMock = new Error('Erro de consulta ao banco de dados');
-    require('./../../../config/database').runQuery.mockRejectedValue(errorMock);
+    require('../src/config/database').runQuery.mockRejectedValue(errorMock);
 
     await expect(
       pedidoRepository.statusPagamentoPedido(idMock)

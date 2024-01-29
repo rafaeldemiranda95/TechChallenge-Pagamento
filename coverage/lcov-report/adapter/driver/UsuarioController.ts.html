@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for core/domain/useCases/Usuario/UsuarioUseCase.ts</title>
+    <title>Code coverage report for adapter/driver/UsuarioController.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../../prettify.css" />
-    <link rel="stylesheet" href="../../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">core/domain/useCases/Usuario</a> UsuarioUseCase.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">adapter/driver</a> UsuarioController.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>0/0</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -110,106 +110,100 @@
 <a name='L45'></a><a href='#L45'>45</a>
 <a name='L46'></a><a href='#L46'>46</a>
 <a name='L47'></a><a href='#L47'>47</a>
-<a name='L48'></a><a href='#L48'>48</a>
-<a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L48'></a><a href='#L48'>48</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">9x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { UsuarioRepository } from '../../../../adapter/driven/infra/UsuarioRepository';
-import { Usuario } from '../../../domain/models/Usuario';
-&nbsp;
-export class UsuarioUseCase {
-  private usuarioRepository: UsuarioRepository;
-&nbsp;
-  constructor(usuarioRepository: UsuarioRepository) {
-    this.usuarioRepository = usuarioRepository;
-  }
-&nbsp;
-  // Manter
-  async autenticaAdministrador(usuario: Usuario, res: any) {
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Usuario } from '../../core/domain/models/Usuario';
+import { UsuarioUseCase } from '../../core/domain/useCases/Usuario/UsuarioUseCase';
+import { CPF } from '../../core/domain/valueObjects/cpf';
+export class UsuarioController {
+  constructor(
+    private usuarioUseCase: UsuarioUseCase,
+    private cpfFactory: (cpf: string) =&gt; CPF
+  ) {}
+  async autenticaAdminstrador(email: string, senha: string, res: any) {
     try {
-      const usuarioAutenticado =
-        await this.usuarioRepository.autenticaAdministrador(usuario);
-      if (usuarioAutenticado) {
-        res.status(200).send('Usuário Autenticado');
-      } else {
-        throw new Error('Usuário não encontrado');
-      }
-    } catch (error) {
-      // Aqui você pode tratar os erros conforme necessário
-      throw error;
+      let usuario = new Usuario('', email, '', '', senha);
+      await this.usuarioUseCase.autenticaAdministrador(usuario, res);
+    } catch (error: any) {
+      throw new Error('Erro de autenticação do administrador');
     }
   }
-  async autenticaCliente(usuario: Usuario, res: any) {
+  async autenticaCliente(cpf: string, res: any) {
     try {
-      const verificaUsuario = await this.usuarioRepository.autenticaCliente(
-        usuario
-      );
-      if (verificaUsuario) {
-        res.status(200).send(verificaUsuario);
-      } else {
-        throw new Error('Usuário não encontrado');
-      }
+      let usuario = new Usuario('', '', cpf, '');
+      await this.usuarioUseCase.autenticaCliente(usuario, res);
     } catch (error: any) {
-      throw error;
-    }
-  }
-&nbsp;
-  async validarToken(token: string) {
-    try {
-      let tokenValido = await this.usuarioRepository.validarToken(token);
-      return tokenValido;
-    } catch (error: any) {
-      throw error;
+      throw new Error('Erro de autenticação do cliente');
     }
   }
 }
+&nbsp;
+// import { Usuario } from '../../core/domain/models/Usuario';
+// import { UsuarioUseCase } from '../../core/domain/useCases/Usuario/UsuarioUseCase';
+// export class UsuarioController {
+//   // Manter
+//   async autenticaAdminstrador(email: string, senha: string, res: any) {
+//     try {
+//       let usuario = new Usuario('', email, '', '', senha);
+//       await new UsuarioUseCase().autenticaAdministrador(usuario, res);
+//     } catch (error: any) {
+//       console.log(error);
+//     }
+//   }
+//   async autenticaCliente(cpf: string, res: any) {
+//     try {
+//       let usuario = new Usuario('', '', cpf, '');
+//       await new UsuarioUseCase().autenticaCliente(usuario, res);
+//     } catch (error: any) {
+//       console.log(error);
+//     }
+//   }
+// }
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -219,14 +213,14 @@ export class UsuarioUseCase {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2024-01-29T22:40:47.013Z
             </div>
-        <script src="../../../../prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../../sorter.js"></script>
-        <script src="../../../../block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     

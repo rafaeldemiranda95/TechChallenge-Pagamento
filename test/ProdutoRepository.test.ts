@@ -1,6 +1,6 @@
-import { ProdutoRepository } from './ProdutoRepository';
+import { ProdutoRepository } from '../src/adapter/driven/infra/ProdutoRepository';
 
-jest.mock('../../../config/database');
+jest.mock('../src/config/database');
 
 describe('ProdutoRepository', () => {
   let produtoRepository: ProdutoRepository;
@@ -10,7 +10,7 @@ describe('ProdutoRepository', () => {
   });
 
   test('deve retornar uma lista de produtos', async () => {
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('./../src/config/database').runQuery.mockResolvedValue([
       { id: 1, nome: 'Produto 1' },
     ]);
     const produtos = await produtoRepository.exibirLista();
@@ -19,7 +19,7 @@ describe('ProdutoRepository', () => {
 
   test('deve retornar produtos por categoria', async () => {
     const categoriaMock = 'categoriaTeste';
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('./../src/config/database').runQuery.mockResolvedValue([
       { id: 1, nome: 'Produto 1', categoria: categoriaMock },
     ]);
     const produtos = await produtoRepository.exibirPorCategoria(categoriaMock);
@@ -28,7 +28,7 @@ describe('ProdutoRepository', () => {
 
   test('deve retornar um produto por ID', async () => {
     const idMock = 1;
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('./../src/config/database').runQuery.mockResolvedValue([
       { id: idMock, nome: 'Produto 1' },
     ]);
     const produto = await produtoRepository.exibirPorId(idMock);
@@ -43,7 +43,7 @@ describe('ProdutoRepository', () => {
       descricao: 'Descrição',
       imagem: 'imagem.jpg',
     };
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('./../src/config/database').runQuery.mockResolvedValue([
       produtoMock,
     ]);
     const produtoSalvo = await produtoRepository.salvar(produtoMock);
@@ -59,7 +59,7 @@ describe('ProdutoRepository', () => {
       descricao: 'Nova descrição',
       imagem: 'nova_imagem.jpg',
     };
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('./../src/config/database').runQuery.mockResolvedValue([
       produtoMock,
     ]);
     const produtoAlterado = await produtoRepository.alterar(produtoMock);
@@ -68,7 +68,7 @@ describe('ProdutoRepository', () => {
 
   test('deve apagar um produto', async () => {
     const idMock = 1;
-    require('./../../../config/database').runQuery.mockResolvedValue([
+    require('./../src/config/database').runQuery.mockResolvedValue([
       { id: idMock, nome: 'Produto Apagado' },
     ]);
     const produtoApagado = await produtoRepository.apagar(idMock);
