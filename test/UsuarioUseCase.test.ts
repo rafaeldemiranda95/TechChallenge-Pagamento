@@ -2,174 +2,184 @@ import { UsuarioRepository } from '../src/adapter/driven/infra/UsuarioRepository
 import { Usuario } from '../src/core/domain/models/Usuario';
 import { UsuarioUseCase } from '../src/core/domain/useCases/Usuario/UsuarioUseCase';
 
-jest.mock('../src/adapter/driven/infra/UsuarioRepository');
-
-describe('UsuarioUseCase', () => {
-  let usuarioUseCase: UsuarioUseCase;
-  let usuarioRepositoryMock: jest.Mocked<UsuarioRepository>;
-  let mockResponse: any;
-
-  beforeEach(() => {
-    usuarioRepositoryMock =
-      new UsuarioRepository() as jest.Mocked<UsuarioRepository>;
-    usuarioUseCase = new UsuarioUseCase(usuarioRepositoryMock);
-    mockResponse = {
-      status: jest.fn(() => mockResponse),
-      send: jest.fn(),
-    };
-  });
-
-  test('deve autenticar um administrador existente', async () => {
-    const usuarioMock = new Usuario(
-      'Nome1',
-      'email1@example.com',
-      '123.456.789-00',
-      'admin',
-      'senha1',
-      'token1',
-      1
-    );
-    const retornoEsperado = 'algumaStringRepresentandoUsuario'; // Ajuste conforme a lógica de autenticação
-
-    usuarioRepositoryMock.autenticaAdministrador.mockResolvedValue(
-      retornoEsperado
-    );
-
-    await usuarioUseCase.autenticaAdministrador(usuarioMock, mockResponse);
-
-    expect(mockResponse.send).toHaveBeenCalledWith('Usuário Autenticado');
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
-  });
-
-  test('deve lançar erro quando o administrador não for encontrado', async () => {
-    const usuarioMock = new Usuario(
-      'Nome1',
-      'email1@example.com',
-      '123.456.789-00',
-      'admin',
-      'senha1',
-      'token1',
-      1
-    );
-    usuarioRepositoryMock.autenticaAdministrador.mockResolvedValue(undefined);
-
-    await expect(
-      usuarioUseCase.autenticaAdministrador(usuarioMock, mockResponse)
-    ).rejects.toThrow('Usuário não encontrado');
-  });
-
-  test('deve propagar erros do repositório', async () => {
-    const usuarioMock = new Usuario(
-      'Nome1',
-      'email1@example.com',
-      '123.456.789-00',
-      'admin',
-      'senha1',
-      'token1',
-      1
-    );
-    const errorMock = new Error('Erro de teste');
-    usuarioRepositoryMock.autenticaAdministrador.mockRejectedValue(errorMock);
-
-    await expect(
-      usuarioUseCase.autenticaAdministrador(usuarioMock, mockResponse)
-    ).rejects.toThrow('Erro de teste');
-  });
+jest.mock('../src/adapter/driven/infra/UsuarioRepository', () => {
+  return {
+    UsuarioRepository: jest.fn().mockImplementation(() => {
+      return {
+        salvar: jest.fn(),
+        autenticaAdministrador: jest.fn(),
+        autenticaCliente: jest.fn(),
+        validarToken: jest.fn(),
+      };
+    }),
+  };
 });
 
-describe('UsuarioUseCase - autenticaCliente', () => {
+type MockResponse = {
+  status: jest.Mock;
+  send: jest.Mock;
+};
+describe('UsuarioUseCase - cadastraUsuario', () => {
   let usuarioUseCase: UsuarioUseCase;
-  let usuarioRepositoryMock: jest.Mocked<UsuarioRepository>;
-  let mockResponse: any;
+  let mockUsuarioRepository: jest.Mocked<UsuarioRepository>;
+  let mockRes: MockResponse;
 
   beforeEach(() => {
-    usuarioRepositoryMock =
+    mockUsuarioRepository =
       new UsuarioRepository() as jest.Mocked<UsuarioRepository>;
-    usuarioUseCase = new UsuarioUseCase(usuarioRepositoryMock);
-    mockResponse = {
-      status: jest.fn(() => mockResponse),
+    usuarioUseCase = new UsuarioUseCase(mockUsuarioRepository);
+    mockRes = {
+      status: jest.fn().mockReturnThis(),
       send: jest.fn(),
     };
+    jest.spyOn(console, 'log').mockImplementation(() => {});
+    jest.clearAllMocks();
   });
 
-  test('deve autenticar um cliente existente', async () => {
-    const usuarioMock = new Usuario(
-      'Nome',
-      'email@example.com',
-      '123.456.789-00'
-    );
-    const retornoEsperado = 'tokem-mock';
-    usuarioRepositoryMock.autenticaCliente.mockResolvedValue(retornoEsperado);
-
-    await usuarioUseCase.autenticaCliente(usuarioMock, mockResponse);
-
-    expect(mockResponse.send).toHaveBeenCalledWith(retornoEsperado);
-    expect(mockResponse.status).toHaveBeenCalledWith(200);
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
-  test('deve lançar erro quando o cliente não for encontrado', async () => {
-    const usuarioMock = new Usuario(
-      'Nome',
-      'email@example.com',
-      '123.456.789-00'
-    );
-    usuarioRepositoryMock.autenticaCliente.mockResolvedValue(undefined);
+  describe('autenticaAdministrador', () => {
+    it('deve autenticar um administrador com sucesso', async () => {
+      const mockUsuario = new Usuario(
+        'Nome1',
+        'email1@example.com',
+        '123.456.789-00',
+        'admin',
+        'senha1',
+        'token1',
+        1
+      );
+      mockUsuarioRepository.autenticaAdministrador.mockResolvedValue(
+        'token-mock'
+      );
 
-    await expect(
-      usuarioUseCase.autenticaCliente(usuarioMock, mockResponse)
-    ).rejects.toThrow('Usuário não encontrado');
+      await usuarioUseCase.autenticaAdministrador(mockUsuario, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith('token-mock');
+    });
+
+    it('deve enviar resposta de erro quando o usuário não for encontrado', async () => {
+      const mockUsuario = new Usuario(
+        'Nome1',
+        'email1@example.com',
+        '123.456.789-00',
+        'admin',
+        'senha1',
+        'token1',
+        1
+      );
+      mockUsuarioRepository.autenticaAdministrador.mockResolvedValue(undefined);
+
+      await usuarioUseCase.autenticaAdministrador(mockUsuario, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.send).toHaveBeenCalledWith('Usuário não encontrado');
+    });
+
+    it('deve tratar erro durante a autenticação', async () => {
+      const mockUsuario = new Usuario(
+        'Nome1',
+        'email1@example.com',
+        '123.456.789-00',
+        'admin',
+        'senha1',
+        'token1',
+        1
+      );
+      const errorMessage = 'Erro na autenticação';
+      mockUsuarioRepository.autenticaAdministrador.mockRejectedValue(
+        new Error(errorMessage)
+      );
+
+      await expect(
+        usuarioUseCase.autenticaAdministrador(mockUsuario, mockRes)
+      ).rejects.toThrow(new Error(errorMessage));
+    });
   });
 
-  test('deve propagar erros do repositório', async () => {
-    const usuarioMock = new Usuario(
-      'Nome',
-      'email@example.com',
-      '123.456.789-00'
-    );
-    const errorMock = new Error('Erro de teste');
-    usuarioRepositoryMock.autenticaCliente.mockRejectedValue(errorMock);
+  describe('autenticaCliente', () => {
+    it('deve autenticar um cliente com sucesso', async () => {
+      const mockUsuario = new Usuario(
+        'Cliente',
+        'cliente@example.com',
+        'senha123',
+        'cliente'
+      );
+      mockUsuarioRepository.autenticaCliente.mockResolvedValue('token-mock');
 
-    await expect(
-      usuarioUseCase.autenticaCliente(usuarioMock, mockResponse)
-    ).rejects.toThrow('Erro de teste');
+      await usuarioUseCase.autenticaCliente(mockUsuario, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(200);
+      expect(mockRes.send).toHaveBeenCalledWith('token-mock');
+    });
+
+    it('deve enviar resposta de erro quando o cliente não for encontrado', async () => {
+      const mockUsuario = new Usuario(
+        'Cliente',
+        'cliente@example.com',
+        'senha123',
+        'cliente'
+      );
+      mockUsuarioRepository.autenticaCliente.mockResolvedValue(undefined);
+
+      await usuarioUseCase.autenticaCliente(mockUsuario, mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(400);
+      expect(mockRes.send).toHaveBeenCalledWith('Usuário não encontrado');
+    });
+
+    it('deve tratar erro durante a autenticação', async () => {
+      const mockUsuario = new Usuario(
+        'Cliente',
+        'cliente@example.com',
+        'senha123',
+        'cliente'
+      );
+      const errorMessage = 'Erro na autenticação';
+      mockUsuarioRepository.autenticaCliente.mockRejectedValue(
+        new Error(errorMessage)
+      );
+
+      await expect(
+        usuarioUseCase.autenticaCliente(mockUsuario, mockRes)
+      ).rejects.toThrow(errorMessage);
+    });
   });
-});
 
-describe('UsuarioUseCase - validarToken', () => {
-  let usuarioUseCase: UsuarioUseCase;
-  let usuarioRepositoryMock: jest.Mocked<UsuarioRepository>;
+  describe('validarToken', () => {
+    it('deve retornar true para um token válido', async () => {
+      const token = 'token-valido';
+      mockUsuarioRepository.validarToken.mockResolvedValue(true);
 
-  beforeEach(() => {
-    usuarioRepositoryMock =
-      new UsuarioRepository() as jest.Mocked<UsuarioRepository>;
-    usuarioUseCase = new UsuarioUseCase(usuarioRepositoryMock);
-  });
+      const resultado = await usuarioUseCase.validarToken(token);
 
-  test('deve retornar verdadeiro para um token válido', async () => {
-    const tokenMock = 'tokenValido';
-    usuarioRepositoryMock.validarToken.mockResolvedValue(true);
+      expect(resultado).toBe(true);
+      expect(mockUsuarioRepository.validarToken).toHaveBeenCalledWith(token);
+    });
 
-    const resultado = await usuarioUseCase.validarToken(tokenMock);
+    it('deve retornar false para um token inválido', async () => {
+      const token = 'token-invalido';
+      mockUsuarioRepository.validarToken.mockResolvedValue(false);
 
-    expect(resultado).toBe(true);
-  });
+      const resultado = await usuarioUseCase.validarToken(token);
 
-  test('deve retornar falso para um token inválido', async () => {
-    const tokenMock = 'tokenInvalido';
-    usuarioRepositoryMock.validarToken.mockResolvedValue(false);
+      expect(resultado).toBe(false);
+      expect(mockUsuarioRepository.validarToken).toHaveBeenCalledWith(token);
+    });
 
-    const resultado = await usuarioUseCase.validarToken(tokenMock);
+    it('deve tratar erro durante a validação do token', async () => {
+      const token = 'token-com-erro';
+      const errorMessage = 'Erro na validação do token';
+      mockUsuarioRepository.validarToken.mockRejectedValue(
+        new Error(errorMessage)
+      );
 
-    expect(resultado).toBe(false);
-  });
-
-  test('deve propagar erros do repositório', async () => {
-    const tokenMock = 'tokenComErro';
-    const errorMock = new Error('Erro de teste');
-    usuarioRepositoryMock.validarToken.mockRejectedValue(errorMock);
-
-    await expect(usuarioUseCase.validarToken(tokenMock)).rejects.toThrow(
-      'Erro de teste'
-    );
+      await expect(usuarioUseCase.validarToken(token)).rejects.toThrow(
+        errorMessage
+      );
+    });
   });
 });

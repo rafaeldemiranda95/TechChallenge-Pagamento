@@ -52,6 +52,15 @@ describe('ProdutoUseCase', () => {
   });
 
   describe('listarProdutos', () => {
+    it('deve enviar uma resposta 404 quando nenhum produto é encontrado', async () => {
+      mockProdutoRepository.exibirLista.mockResolvedValue([]);
+      await produtoUseCase.listarProdutos(mockRes);
+
+      expect(mockRes.status).toHaveBeenCalledWith(404);
+      expect(mockRes.send).toHaveBeenCalledWith(
+        'Não foram encontrados produtos'
+      );
+    });
     it('deve retornar uma lista de produtos', async () => {
       const mockProdutos = [
         {
@@ -197,6 +206,12 @@ describe('ProdutoUseCase', () => {
     });
   });
   describe('alterarProduto', () => {
+    it('deve retornar null quando o produto a ser alterado não é encontrado', async () => {
+      const produtoMock = { id: 999, nome: 'Produto Inexistente', preco: 100 };
+      const resultado = await produtoUseCase.alterarProduto(produtoMock, {});
+
+      expect(resultado).toBeNull();
+    });
     it('deve alterar e enviar um produto com sucesso', async () => {
       const mockProduto = {
         nome: 'Produto Teste',

@@ -71,7 +71,7 @@ describe('UsuarioRepository', () => {
       expect(resultado).toBeUndefined();
     });
 
-    test('deve autenticar um administrador e retornar um token', async () => {
+    it('deve autenticar um administrador e retornar um token', async () => {
       const usuarioMock: Usuario = {
         id: 1,
         nome: 'Nome do Usuário',

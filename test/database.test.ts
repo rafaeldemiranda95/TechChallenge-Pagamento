@@ -17,7 +17,7 @@ describe('runQuery', () => {
     pool = new Pool();
   });
 
-  test('deve executar uma consulta e retornar resultados', async () => {
+  it('deve executar uma consulta e retornar resultados', async () => {
     const mockRows = [{ id: 1, name: 'Test' }];
     pool.query.mockResolvedValue({ rows: mockRows });
 
@@ -27,7 +27,7 @@ describe('runQuery', () => {
     expect(pool.query).toHaveBeenCalledWith('SELECT * FROM table');
   });
 
-  test('deve lidar com erros de consulta', async () => {
+  it('deve lidar com erros de consulta', async () => {
     pool.query.mockRejectedValue(new Error('Erro de consulta'));
 
     await expect(runQuery('SELECT * FROM table')).rejects.toThrow(

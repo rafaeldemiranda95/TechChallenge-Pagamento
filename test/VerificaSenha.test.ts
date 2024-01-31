@@ -13,7 +13,7 @@ describe('VerificaSenha', () => {
     verificaSenha = new VerificaSenha();
   });
 
-  test('deve retornar true para uma senha que corresponde ao hash', async () => {
+  it('deve retornar true para uma senha que corresponde ao hash', async () => {
     const senha = 'minhaSenha123';
     const salt = 'meuSalt';
     const hash = crypto
@@ -26,7 +26,7 @@ describe('VerificaSenha', () => {
     expect(resultado).toBe(true);
   });
 
-  test('deve retornar false para uma senha que não corresponde ao hash', async () => {
+  it('deve retornar false para uma senha que não corresponde ao hash', async () => {
     const senha = 'minhaSenha123';
     const senhaErrada = 'senhaErrada123';
     const salt = 'meuSalt';
@@ -40,7 +40,7 @@ describe('VerificaSenha', () => {
     expect(resultado).toBe(false);
   });
 
-  test('deve lançar um erro para um hash mal formatado', async () => {
+  it('deve lançar um erro para um hash mal formatado', async () => {
     const senha = 'minhaSenha123';
     const senhaHash = 'hashMalFormatado';
 

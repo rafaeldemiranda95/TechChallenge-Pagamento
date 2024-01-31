@@ -10,7 +10,7 @@ describe('PedidoRepository', () => {
     pedidoRepository = new PedidoRepository();
   });
 
-  test('deve retornar o status do pagamento para um ID válido', async () => {
+  it('deve retornar o status do pagamento para um ID válido', async () => {
     const idMock = 1;
     const pagamentoMock = { status: 'Pago' };
     require('../src/config/database').runQuery.mockResolvedValue([
@@ -25,7 +25,7 @@ describe('PedidoRepository', () => {
     );
   });
 
-  test('deve retornar mensagem padrão para um ID inválido', async () => {
+  it('deve retornar mensagem padrão para um ID inválido', async () => {
     const idMock = 999;
     require('../src/config/database').runQuery.mockResolvedValue([]);
 
@@ -37,7 +37,7 @@ describe('PedidoRepository', () => {
     );
   });
 
-  test('deve lidar com erros de consulta ao banco de dados', async () => {
+  it('deve lidar com erros de consulta ao banco de dados', async () => {
     const idMock = 1;
     const errorMock = new Error('Erro de consulta ao banco de dados');
     require('../src/config/database').runQuery.mockRejectedValue(errorMock);
