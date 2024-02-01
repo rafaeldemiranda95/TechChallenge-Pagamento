@@ -30,4 +30,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: rafaeldemiranda/techchallenge-pagamento:${{ env.COMMIT_HASH }}
+          tags: rafaeldemiranda/techchallenge-pagamento:latest
